@@ -31,3 +31,6 @@ pip install fastapi uvicorn pandas langchain-text-splitters sentence-transformer
 
 #Launch Local Engine Server
 uvicorn main:app --reload
+
+Once initialized, access the interactive dashboard interface control panel at:
+👉 http://127.0.0.1:8000/docs
