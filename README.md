@@ -19,8 +19,8 @@ The system isolates unstructured text blocks from open-source repositories using
 Clone this repository to your local engine and configure the dependency landscape:
 ```bash
 # Clone the repository
-git clone [https://github.com/YOUR_USERNAME/YOUR_REPOSITORY_NAME.git](https://github.com/YOUR_USERNAME/YOUR_REPOSITORY_NAME.git)
-cd YOUR_REPOSITORY_NAME
+git clone https://github.com/Meghanaanand2005/AI-SMART-BUG-ANALYZER-AND-FIX-ADVISOR.git
+cd Meghanaanand2005
 
 # Setup and activate virtual workspace environment
 python -m venv venv
