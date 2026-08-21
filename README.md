@@ -147,6 +147,7 @@ uvicorn main:app --reload --host 127.0.0.1 --port 8000
 * **CI/CD Pipeline Integrations**: Direct GitHub Actions and GitLab CI integrations to automatically analyze continuous integration build failures and open pull requests with fixes.
 * **Distributed Vector Sharding**: Scaling ChromaDB cluster configurations to handle multi-terabyte enterprise log archives seamlessly.
 
-```
-
-```
+---
+ ## Live Deployment Link:
+https://ai-smart-bug-analyzer-and-fix-advisor-1.onrender.com/
+---
