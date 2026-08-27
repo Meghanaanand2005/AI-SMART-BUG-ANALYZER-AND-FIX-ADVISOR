@@ -1,3 +1,4 @@
+#[cite: 3]
 import asyncio
 import json
 import re
@@ -1825,15 +1826,110 @@ async def root_dashboard():
             function downloadRawReport() {
                 if (!currentRawAnalysisData) return;
                 const d = currentRawAnalysisData;
-                let md = `# Diagnostic Report (${d.bug_id})\n`;
-                md += `Timestamp: ${d.timestamp}\n\n`;
-                md += `**Root Cause:** ${d.root_cause.root_cause_summary}\n`;
-                triggerFileDownload(`${d.bug_id}_Report.md`, md);
+                const a0 = d.log_analysis || {};
+                const a1 = d.triage || {};
+                const a2 = d.root_cause || {};
+                const a3 = d.fix_suggestion || {};
+
+                let md = `# Intelligent Bug Diagnosis & Remediation Report\n\n`;
+                md += `**Bug ID:** ${d.bug_id}\n`;
+                md += `**Timestamp:** ${d.timestamp}\n`;
+                md += `**Component:** ${a1.affected_component || 'UNKNOWN'}\n`;
+                md += `**Severity:** ${a1.severity || 'UNKNOWN'}\n`;
+                md += `**Error Type:** ${a1.error_type || 'GeneralException'}\n\n`;
+
+                md += `## 1. Stage 1: Log Analysis Agent\n`;
+                md += `- **Detected Log Level:** ${a0.detected_log_level}\n`;
+                md += `- **Execution Call Site:** \`${a0.execution_site}\`\n`;
+                md += `- **Total Lines Analyzed:** ${a0.total_lines_analyzed}\n`;
+                md += `- **Stack Trace Detected:** ${a0.stack_trace_detected ? 'Yes' : 'No'}\n`;
+                md += `- **Log Structure Summary:** ${a0.log_structure_summary}\n`;
+                md += `- **Key Anomaly Tokens:** ${(a0.key_anomaly_tokens || []).join(', ')}\n\n`;
+
+                md += `## 2. Stage 2: Triage & Classification Agent\n`;
+                md += `- **Severity Level:** ${a1.severity}\n`;
+                md += `- **Error Exception Type:** ${a1.error_type}\n`;
+                md += `- **Affected Component:** ${a1.affected_component}\n`;
+                md += `- **Urgency Summary:** ${a1.urgency_summary}\n\n`;
+
+                md += `## 3. Stage 3: Root Cause Diagnostics Agent\n`;
+                md += `- **Root Cause Summary:** ${a2.root_cause_summary}\n`;
+                md += `- **Systemic Risk Rating:** ${a2.systemic_risk}\n`;
+                md += `- **Historical Matches Found:** ${a2.historical_matches_found}\n`;
+                md += `### Contributing Factors:\n`;
+                if (a2.contributing_factors && a2.contributing_factors.length > 0) {
+                    a2.contributing_factors.forEach(f => {
+                        md += `* ${f}\n`;
+                    });
+                }
+                md += `\n`;
+
+                md += `## 4. Stage 4: Fix Recommendation Advisor Agent\n`;
+                md += `### Suggested Code Patch:\n`;
+                md += `${a3.suggested_patch || 'No patch generated.'}\n\n`;
+                
+                md += `### Remediation Steps:\n`;
+                if (a3.remediation_steps && a3.remediation_steps.length > 0) {
+                    a3.remediation_steps.forEach(s => {
+                        md += `1. ${s}\n`;
+                    });
+                }
+                md += `\n`;
+
+                md += `### Preventative Guardrails:\n`;
+                if (a3.preventative_measures && a3.preventative_measures.length > 0) {
+                    a3.preventative_measures.forEach(p => {
+                        md += `* ${p}\n`;
+                    });
+                }
+
+                triggerFileDownload(`${d.bug_id}_Comprehensive_Report.md`, md);
             }
 
             function downloadFileReport() {
                 if (!currentFileData) return;
-                triggerFileDownload(`${currentFileData.filename}_Report.md`, `# Log Analysis Report for ${currentFileData.filename}\n`);
+                const f = currentFileData;
+
+                let md = `# Log Ingestion & Multi-Agent Diagnostic Report\n\n`;
+                md += `**Filename:** ${f.filename}\n`;
+                md += `**Processing Time:** ${f.processing_time_seconds} seconds\n`;
+                md += `**Total Error Chunks Processed:** ${f.total_chunks_processed}\n`;
+                md += `**Vector Database Memory Updated:** ${f.vector_store_updated ? 'Yes' : 'No'}\n\n`;
+
+                md += `## Raw Content Preview\n`;
+                md += `\`\`\`text\n${f.raw_content_preview}\n\`\`\`\n\n`;
+
+                md += `## Chunk-by-Chunk Multi-Agent Analysis\n\n`;
+                if (f.chunk_analyses && f.chunk_analyses.length > 0) {
+                    f.chunk_analyses.forEach(c => {
+                        const a0 = c.log_analysis || {};
+                        const a1 = c.triage || {};
+                        const a2 = c.root_cause || {};
+                        const a3 = c.fix_suggestion || {};
+
+                        md += `### ${c.chunk_id}\n`;
+                        md += `- **Log Level:** ${a0.detected_log_level}\n`;
+                        md += `- **Severity:** ${a1.severity}\n`;
+                        md += `- **Error Type:** ${a1.error_type}\n`;
+                        md += `- **Call Site:** \`${a0.execution_site}\`\n\n`;
+
+                        md += `**Log Segment Preview:**\n\`\`\`text\n${c.preview_text}\n\`\`\`\n\n`;
+
+                        md += `**Root Cause:** ${a2.root_cause_summary}\n\n`;
+
+                        md += `**Suggested Patch:**\n${a3.suggested_patch || 'N/A'}\n\n`;
+
+                        md += `**Remediation Steps:**\n`;
+                        if (a3.remediation_steps) {
+                            a3.remediation_steps.forEach(s => {
+                                md += `* ${s}\n`;
+                            });
+                        }
+                        md += `\n---\n\n`;
+                    });
+                }
+
+                triggerFileDownload(`${f.filename}_Comprehensive_Report.md`, md);
             }
 
             function escapeHtml(text) {
